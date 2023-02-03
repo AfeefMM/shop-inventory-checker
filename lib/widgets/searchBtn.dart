@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_mgmt/home/options_page.dart';
+import 'package:inventory_mgmt/home/options_page2.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:get/get.dart';
 

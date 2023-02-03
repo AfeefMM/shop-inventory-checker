@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'home/code_entry.dart';
+import 'home/description.dart';
 import 'home/display_page.dart';
+import 'home/options_page2.dart';
 
 void main() {
   runApp(const GetMaterialApp(home: MyApp()));
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CodeEntryPage(),
+      home: DescriptionPage(),
     );
   }
 }
