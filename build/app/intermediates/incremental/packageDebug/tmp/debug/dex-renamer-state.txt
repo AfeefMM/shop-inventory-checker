@@ -1,0 +1,4 @@
+#Wed Feb 01 14:55:31 GST 2023
+base.0=/Users/afeefmahmood/Desktop/Giordano e-shop/inventory_mgmt/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
