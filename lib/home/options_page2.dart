@@ -6,12 +6,7 @@ import '../widgets/dropdown_button.dart';
 import '../widgets/question_text.dart';
 import '../widgets/searchBtn.dart';
 
-class OptionsPage extends StatefulWidget {
-  @override
-  _OptionsPageState createState() => _OptionsPageState();
-}
-
-class _OptionsPageState extends State<OptionsPage> {
+class OptionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -94,17 +89,6 @@ class _OptionsPageState extends State<OptionsPage> {
             ],
           ),
           //promotions button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-                child: SearchBtn(
-                  text: 'Check for promotions',
-                ),
-              ),
-            ],
-          ),
 
           Spacer()
         ],

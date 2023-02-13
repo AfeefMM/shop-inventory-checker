@@ -7,12 +7,7 @@ import '../widgets/question_text.dart';
 import '../widgets/scanbtn.dart';
 import '../widgets/searchBtn.dart';
 
-class CodeEntryPage extends StatefulWidget {
-  @override
-  _CodeEntryPageState createState() => _CodeEntryPageState();
-}
-
-class _CodeEntryPageState extends State<CodeEntryPage> {
+class CodeEntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
-import 'package:inventory_mgmt/widgets/btn_text.dart';
+import 'package:get/get.dart';
 
 import '../widgets/question_text.dart';
-import '../widgets/scanbtn.dart';
-import '../widgets/searchBtn.dart';
 
-class DescriptionPage extends StatefulWidget {
-  @override
-  _DescriptionPageState createState() => _DescriptionPageState();
-}
-
-class _DescriptionPageState extends State<DescriptionPage> {
+class DescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var value = Get.arguments;
+    print(value);
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +41,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 50, 1, 1),
                 child: QuestionText(
-                  text: 'Title',
+                  text: value[0].toString(),
                   size: 32,
                 ),
               ),
