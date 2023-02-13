@@ -3071,9 +3071,6 @@
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         
         <item name="android:windowBackground">@drawable/launch_background</item>
-        <item name="android:forceDarkAllowed">false</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
     <style name="MaterialAlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
     <item name="android:layout">@layout/mtrl_alert_dialog</item>

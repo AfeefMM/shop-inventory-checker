@@ -1,59 +1,11 @@
 [
     {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable_background.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable/background.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-xhdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-xhdpi-v31/android12branding.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-xxhdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-xxhdpi-v31/android12branding.png"
-    },
-    {
         "merged": "com.example.inventory_mgmt.app-merged_res-23:/mipmap-xxxhdpi_ic_launcher.png.flat",
         "source": "com.example.inventory_mgmt.app-main-17:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
         "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable_launch_background.xml.flat",
         "source": "com.example.inventory_mgmt.app-main-17:/drawable/launch_background.xml"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-night-xhdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-night-xhdpi-v31/android12branding.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-night-mdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-night-mdpi-v31/android12branding.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-night-xxxhdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-night-xxxhdpi-v31/android12branding.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/mipmap-xxhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/mipmap-mdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-night-xxhdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-night-xxhdpi-v31/android12branding.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-xxxhdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-xxxhdpi-v31/android12branding.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-hdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-hdpi-v31/android12branding.png"
-    },
-    {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-night-hdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-night-hdpi-v31/android12branding.png"
     },
     {
         "merged": "com.example.inventory_mgmt.app-merged_res-23:/mipmap-hdpi_ic_launcher.png.flat",
@@ -64,15 +16,15 @@
         "source": "com.example.inventory_mgmt.app-main-17:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-mdpi-v31_android12branding.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-mdpi-v31/android12branding.png"
+        "merged": "com.example.inventory_mgmt.app-merged_res-23:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.inventory_mgmt.app-main-17:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
         "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-v21_launch_background.xml.flat",
         "source": "com.example.inventory_mgmt.app-main-17:/drawable-v21/launch_background.xml"
     },
     {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable-v21_background.png.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable-v21/background.png"
+        "merged": "com.example.inventory_mgmt.app-merged_res-23:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.inventory_mgmt.app-main-17:/mipmap-mdpi/ic_launcher.png"
     }
 ]
