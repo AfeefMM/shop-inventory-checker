@@ -4,7 +4,9 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
+import 'package:inventory_mgmt/utils/sql_data.dart';
 import 'package:inventory_mgmt/widgets/btn_text.dart';
+import 'package:sql_conn/sql_conn.dart';
 
 import '../widgets/input_text.dart';
 import '../widgets/question_text.dart';
@@ -97,7 +99,7 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                     child: TextField(
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'WorkSans',
@@ -117,10 +119,7 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1, 24, 1, 24),
-                  child: SearchBtn(
-                    text: 'Search',
-                    option: 0,
-                  ),
+                  child: searchBtn('Search', _scanBarcode),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1, 1, 1, 24),
@@ -135,4 +134,50 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
       }),
     );
   }
+
+  Widget searchBtn(text, itemVal) {
+    return OutlinedButton(
+      onPressed: () async {
+        //add codeNum logic
+        //sql search to obtain details of product code
+
+        try {
+          await SqlConn.connect(
+              ip: SQLData.ip,
+              port: SQLData.port,
+              databaseName: SQLData.databaseName,
+              username: SQLData.username,
+              password: SQLData.password);
+
+          var price = getPrice(SQLData.getStyle(_scanBarcode),
+              SQLData.getColour(_scanBarcode), SQLData.getSize(_scanBarcode));
+        } catch (e) {
+          print(e);
+        }
+      },
+      style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.fromLTRB(24, 13, 24, 13),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          backgroundColor: AppColours.btnColour,
+          textStyle: TextStyle(color: AppColours.btnTextColour)),
+      child: BtnText(
+        text: text,
+      ),
+    );
+  }
+
+  Future<String> getPrice(String style, String colour, String size) async {
+    var result = await SqlConn.readData(
+        "select pcsprc from TIGERPOS.dbo.mfprch where pcstyl = ");
+    return result;
+  }
+  // first 8 digits are style
+  //next 2 digits are colour
+  //last 2 digits are size
+  //pass 8 digits as pcstyle check for first 8 digits under the pcstyl column
+
+  //select * from TIGEROS.dbo.mfprch where pcstyl like '01010026%'; -> for price where 8 digit style code is that
+// where pcsize <> '' -> for not empty columns
+  //pccolr like '%0%'- for any col with a 0
 }
