@@ -8,12 +8,14 @@ import 'btn_text.dart';
 
 class SearchBtn extends StatelessWidget {
   Color? color;
+  String codeNum;
   final String text;
   double size;
   TextOverflow overflow;
   int option;
   SearchBtn(
       {Key? key,
+      this.codeNum = "",
       this.color = AppColours.btnColour,
       required this.text,
       this.overflow = TextOverflow.ellipsis,
@@ -30,6 +32,8 @@ class SearchBtn extends StatelessWidget {
         } else if (option == 1) {
           Get.to(() => DisplayPage());
         }
+        //add codeNum logic
+        //sql search to obtain details of product code
       },
       style: ElevatedButton.styleFrom(
           padding: EdgeInsets.fromLTRB(24, 13, 24, 13),
