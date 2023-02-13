@@ -45,17 +45,5 @@ class SearchBtn extends StatelessWidget {
         text: text,
       ),
     );
-    // TextButton(
-
-    //   style: ButtonStyle(
-    //     foregroundColor: MaterialStateProperty.all<Color>(AppColours.btnColour),
-    //     backgroundColor: MaterialStateProperty.all<Color>(AppColours.btnColour),
-    //   ),
-
-    //   onPressed: () {},
-    //   child: BtnText(
-    //     text: text,
-    //   ),
-    // );
   }
 }
