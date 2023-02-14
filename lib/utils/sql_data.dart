@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class SQLData {
   static const String ip = "192.168.0.50";
-  static const int port = 1433;
+  static const String port = "1433";
   static const String databaseName = "TIGERPOS";
   static const String username = "sa";
-  static const String password = "firefox";
+  static const String password = "foxfire";
 
   static String getStyle(String id) {
     var style = "";

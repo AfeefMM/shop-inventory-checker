@@ -6,14 +6,10 @@ import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:inventory_mgmt/utils/sql_data.dart';
 import 'package:inventory_mgmt/widgets/btn_text.dart';
-import 'package:mysql1/mysql1.dart';
 import 'package:mysql_client/mysql_client.dart';
+import 'package:sql_conn/sql_conn.dart';
 
-import '../widgets/input_text.dart';
 import '../widgets/question_text.dart';
-import '../widgets/scanbtn.dart';
-import '../widgets/searchBtn.dart';
-import 'options_page2.dart';
 
 class CodeEntryPage extends StatefulWidget {
   @override
@@ -151,19 +147,34 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
         // Get.to(() => OptionsPage());
         try {
           print("attempting to connect");
-          await MySQLConnection.createConnection(
-              host: SQLData.ip,
+          await SqlConn.connect(
+              ip: SQLData.ip,
               port: SQLData.port,
               databaseName: SQLData.databaseName,
-              userName: SQLData.username,
+              username: SQLData.username,
               password: SQLData.password);
-
-          var price = getPrice(SQLData.getStyle(itemVal),
-              SQLData.getColour(itemVal), SQLData.getSize(itemVal));
-          print(itemVal);
+          // conn.printInfo();
+          //await conn.connect();
+          print(SqlConn.isConnected);
           var snackBar = SnackBar(content: Text("connected"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          Get.to(() => OptionsPage());
+          // var price = getPrice(SQLData.getStyle(itemVal),
+          //     SQLData.getColour(itemVal), SQLData.getSize(itemVal));
+          var style = SQLData.getStyle(itemVal),
+              colour = SQLData.getColour(itemVal),
+              size = SQLData.getSize(itemVal);
+          print("connected");
+          print("sent query");
+          var result = await SqlConn.readData(
+              //"select * from TIGERPOS.dbo.mfprch where pcstyl like '${style}%'");
+              "Select pcsprc from TIGERPOS.dbo.mfprch WHERE pcstyl LIKE '${style}%' AND pccolr LIKE '${colour}' AND pcsize LIKE '${size}'");
+
+          print("result: " + result.toString());
+          print(itemVal);
+
+          //Get.to(() => OptionsPage());
+          SqlConn.disconnect();
+          print(SqlConn.isConnected);
         } catch (e) {
           print(e);
         }
@@ -180,13 +191,14 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
     );
   }
 
-  Future<String> getPrice(String style, String colour, String size) async {
-    print("sent query");
-    // var result = await SqlConn.readData(
-    //     "Select pcsprc from TIGERPOS.dbo.mfprch WHERE pcstyle LIKE ‘$style%’ AND pccolr LIKE ‘$colour AND pcsize LIKE ‘$size’");
-    // print(result);
-    return "result";
-  }
+  // Future<String> getPrice(String style, String colour, String size) async {
+  //   print("sent query");
+  //   var result = await conn.execute(
+  //       "Select pcsprc from TIGERPOS.dbo.mfprch WHERE pcstyle LIKE ‘$style%’ AND pccolr LIKE ‘$colour AND pcsize LIKE ‘$size’");
+  //   print("result: " + result);
+  //   return "result";
+  // }
+
   // first 8 digits are style
   //next 2 digits are colour
   //last 2 digits are size

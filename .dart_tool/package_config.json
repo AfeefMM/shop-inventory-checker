@@ -170,6 +170,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "sql_conn",
+      "rootUri": "file:///Users/afeefmahmood/.pub-cache/hosted/pub.dev/sql_conn-0.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "stack_trace",
       "rootUri": "file:///Users/afeefmahmood/.pub-cache/hosted/pub.dev/stack_trace-1.11.0",
       "packageUri": "lib/",
@@ -224,7 +230,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-02-14T08:22:57.453217Z",
+  "generated": "2023-02-14T10:42:45.066280Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }
