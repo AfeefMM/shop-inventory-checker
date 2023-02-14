@@ -6,12 +6,14 @@ import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:inventory_mgmt/utils/sql_data.dart';
 import 'package:inventory_mgmt/widgets/btn_text.dart';
-import 'package:sql_conn/sql_conn.dart';
+import 'package:mysql1/mysql1.dart';
+import 'package:mysql_client/mysql_client.dart';
 
 import '../widgets/input_text.dart';
 import '../widgets/question_text.dart';
 import '../widgets/scanbtn.dart';
 import '../widgets/searchBtn.dart';
+import 'options_page2.dart';
 
 class CodeEntryPage extends StatefulWidget {
   @override
@@ -54,6 +56,8 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
       ),
     );
   }
+
+  TextEditingController itemCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +103,7 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                     child: TextField(
+                      controller: itemCodeController,
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -119,7 +124,7 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1, 24, 1, 24),
-                  child: searchBtn('Search', _scanBarcode),
+                  child: searchBtn('Search', itemCodeController.text),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1, 1, 1, 24),
@@ -138,19 +143,27 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
   Widget searchBtn(text, itemVal) {
     return OutlinedButton(
       onPressed: () async {
+        setState(() {
+          itemVal = itemCodeController.text;
+        });
         //add codeNum logic
         //sql search to obtain details of product code
-
+        // Get.to(() => OptionsPage());
         try {
-          await SqlConn.connect(
-              ip: SQLData.ip,
+          print("attempting to connect");
+          await MySQLConnection.createConnection(
+              host: SQLData.ip,
               port: SQLData.port,
               databaseName: SQLData.databaseName,
-              username: SQLData.username,
+              userName: SQLData.username,
               password: SQLData.password);
 
-          var price = getPrice(SQLData.getStyle(_scanBarcode),
-              SQLData.getColour(_scanBarcode), SQLData.getSize(_scanBarcode));
+          var price = getPrice(SQLData.getStyle(itemVal),
+              SQLData.getColour(itemVal), SQLData.getSize(itemVal));
+          print(itemVal);
+          var snackBar = SnackBar(content: Text("connected"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Get.to(() => OptionsPage());
         } catch (e) {
           print(e);
         }
@@ -168,9 +181,11 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
   }
 
   Future<String> getPrice(String style, String colour, String size) async {
-    var result = await SqlConn.readData(
-        "select pcsprc from TIGERPOS.dbo.mfprch where pcstyl = ");
-    return result;
+    print("sent query");
+    // var result = await SqlConn.readData(
+    //     "Select pcsprc from TIGERPOS.dbo.mfprch WHERE pcstyle LIKE ‘$style%’ AND pccolr LIKE ‘$colour AND pcsize LIKE ‘$size’");
+    // print(result);
+    return "result";
   }
   // first 8 digits are style
   //next 2 digits are colour

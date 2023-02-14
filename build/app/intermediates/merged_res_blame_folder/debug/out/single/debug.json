@@ -4,10 +4,6 @@
         "source": "com.example.inventory_mgmt.app-main-17:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.inventory_mgmt.app-merged_res-23:/drawable_launch_background.xml.flat",
-        "source": "com.example.inventory_mgmt.app-main-17:/drawable/launch_background.xml"
-    },
-    {
         "merged": "com.example.inventory_mgmt.app-merged_res-23:/mipmap-hdpi_ic_launcher.png.flat",
         "source": "com.example.inventory_mgmt.app-main-17:/mipmap-hdpi/ic_launcher.png"
     },
