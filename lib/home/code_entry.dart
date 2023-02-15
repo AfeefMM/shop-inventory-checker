@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
+import 'package:inventory_mgmt/model/item_price.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:inventory_mgmt/utils/sql_data.dart';
@@ -10,6 +13,7 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 import '../widgets/question_text.dart';
+import 'options_page2.dart';
 
 class CodeEntryPage extends StatefulWidget {
   @override
@@ -166,13 +170,28 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
           print("connected");
           print("sent query");
           var result = await SqlConn.readData(
+              SQLData.priceColourQuery(style, colour)
               //"select * from TIGERPOS.dbo.mfprch where pcstyl like '${style}%'");
-              "Select pcsprc from TIGERPOS.dbo.mfprch WHERE pcstyl LIKE '${style}%' AND pccolr LIKE '${colour}' AND pcsize LIKE '${size}'");
-
+              //"Select pcsprc from TIGERPOS.dbo.mfprch WHERE pcstyl LIKE '${style}%' AND pccolr LIKE '${colour}' AND pcsize LIKE '${size}'"
+              );
+          if (result == '[]') {
+            result = await SqlConn.readData(SQLData.priceNormalQuery(style));
+            print("executes 2nd query");
+          }
           print("result: " + result.toString());
-          print(itemVal);
+          // var priceJSON = jsonDecode(result);
+          // var price = ItemPrice.fromJson(priceJSON);
 
-          //Get.to(() => OptionsPage());
+          // var userMap = json.decode(result);
+          // List<String> priceData = List<String>.from(json.decode(result));
+
+          // List<String> priceList =
+          //     (jsonDecode(result) as List<dynamic>).cast<String>();
+
+          // var priceJson = ItemPrice.fromJson(userMap);
+
+          // print(price);
+          Get.to(() => OptionsPage(), arguments: result.toString());
           SqlConn.disconnect();
           print(SqlConn.isConnected);
         } catch (e) {

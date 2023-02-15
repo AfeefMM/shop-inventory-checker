@@ -42,4 +42,12 @@ class SQLData {
     size = id.substring(10);
     return size;
   }
+
+  static String priceColourQuery(String style, String colour) {
+    return "Select pcsprc from TIGERPOS.dbo.mfprch where pccolr like '${colour}' and pcstyl like '${style}%' order by pctxdt desc; ";
+  }
+
+  static String priceNormalQuery(String style) {
+    return "Select top 1 pcsprc from TIGERPOS.dbo.mfprch where pccolr like '' and pcstyl like '${style}%' order by pctxdt desc; ";
+  }
 }

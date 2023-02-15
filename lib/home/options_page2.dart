@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
+import 'package:get/get.dart';
 
 import '../widgets/dropdown_button.dart';
 import '../widgets/question_text.dart';
 import '../widgets/searchBtn.dart';
 
 class OptionsPage extends StatelessWidget {
+  var args = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -44,7 +47,7 @@ class OptionsPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(75, 75, 1, 10),
                 child: QuestionText(
-                  text: '100 AED',
+                  text: args[11] + args[12] + args[13],
                   size: 32,
                 ),
               ),
