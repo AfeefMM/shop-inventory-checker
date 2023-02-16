@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -165,23 +167,18 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               databaseName: SQLData.databaseName,
               username: SQLData.username,
               password: SQLData.password);
-          // conn.printInfo();
-          //await conn.connect();
+
           print(SqlConn.isConnected);
           var snackBar = SnackBar(content: Text("connected"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          // var price = getPrice(SQLData.getStyle(itemVal),
-          //     SQLData.getColour(itemVal), SQLData.getSize(itemVal));
+
           var style = SQLData.getStyle(itemVal),
               colour = SQLData.getColour(itemVal),
               size = SQLData.getSize(itemVal);
           print("connected");
           print("sent query");
-          var result = await SqlConn.readData(
-              SQLData.priceColourQuery(style, colour)
-              //"select * from TIGERPOS.dbo.mfprch where pcstyl like '${style}%'");
-              //"Select pcsprc from TIGERPOS.dbo.mfprch WHERE pcstyl LIKE '${style}%' AND pccolr LIKE '${colour}' AND pcsize LIKE '${size}'"
-              );
+          var result =
+              await SqlConn.readData(SQLData.priceColourQuery(style, colour));
           if (result == '[]') {
             result = await SqlConn.readData(SQLData.priceNormalQuery(style));
             print("executes 2nd query");
@@ -191,15 +188,15 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               var snackBar = SnackBar(content: Text("item not found"));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
-              //trying out new method
-              final parsed =
-                  json.decode(result.body).cast<Map<String, dynamic>>();
-              parsed
-                  .map<ItemPrice>((json) => ItemPrice.fromJson(json))
-                  .toList();
-              //////////////////////
               print("result: " + result.toString());
               Get.to(() => OptionsPage(), arguments: result.toString());
+              //trying out new method
+              // final parsed =
+              //     json.decode(result.body).cast<Map<String, dynamic>>();
+              // parsed
+              //     .map<ItemPrice>((json) => ItemPrice.fromJson(json))
+              //     .toList();
+              //////////////////////
             }
           } else {
             print("result: " + result.toString());
