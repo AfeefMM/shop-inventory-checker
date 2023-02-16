@@ -4,6 +4,7 @@ import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:get/get.dart';
 import 'package:sql_conn/sql_conn.dart';
 
+import '../utils/size_convertor.dart';
 import '../utils/sql_data.dart';
 import '../widgets/btn_text.dart';
 import '../widgets/dropdown_button.dart';
@@ -118,14 +119,14 @@ class _OptionsPageState extends State<OptionsPage> {
                       child: DropdownBtn(
                 styleCode: argsStyle,
                 option: "colour",
-                //valueNotifier: dropdownColour,
+                valueNotifier: dropdownColour,
               ))),
               Expanded(
                   child: Center(
                       child: DropdownBtn(
                 styleCode: argsStyle,
                 option: "",
-                //valueNotifier: dropdownSize,
+                valueNotifier: dropdownSize,
               ))),
               // Expanded(child: Center(child: DropdownBtn())),
             ],
@@ -135,10 +136,10 @@ class _OptionsPageState extends State<OptionsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-              //   child: checkerBtn(),
-              // ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
+                child: checkerBtn(),
+              ),
               // Padding(
               //   padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
               //   child: SearchBtn(
@@ -178,12 +179,13 @@ class _OptionsPageState extends State<OptionsPage> {
 
   Widget checkerBtn() {
     //get value
-    var size = dropdownSize.value!;
-    var colour = dropdownColour.value!;
 
     return OutlinedButton(
       onPressed: () async {
         //sql search to obtain availability of product code
+        var size = dropdownSize.value ?? "0";
+        size = SizeConv.getCode(size);
+        var colour = dropdownColour.value ?? "0";
         print("attempting to connect");
         await SqlConn.connect(
             ip: SQLData.ip,
@@ -193,6 +195,7 @@ class _OptionsPageState extends State<OptionsPage> {
             password: SQLData.password);
 
         print(SqlConn.isConnected);
+        print("size " + size + " colour:  " + colour);
         var descResult = await SqlConn.readData(
             SQLData.checkAvailability(argsStyle, size, colour));
         print("number of stock: " + descResult.toString());

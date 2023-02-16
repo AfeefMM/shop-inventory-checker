@@ -14,9 +14,14 @@ import '../utils/sql_data.dart';
 import 'btn_text.dart';
 
 class DropdownBtn extends StatefulWidget {
-  const DropdownBtn({super.key, required this.styleCode, required this.option});
+  const DropdownBtn(
+      {super.key,
+      required this.styleCode,
+      required this.option,
+      required this.valueNotifier});
   final String styleCode;
   final String option;
+  final ValueNotifier<String?> valueNotifier;
   @override
   State<DropdownBtn> createState() => _DropdownBtnState();
 }
@@ -37,6 +42,16 @@ List<String> list2 = <String>[
   '13'
 ];
 List<String> sizeList = <String>[
+  'XS',
+  'S',
+  'M',
+  'L',
+  'XL',
+  'XXL',
+  'XXXL',
+  'FREE SIZE'
+];
+List<String> sizeList2 = <String>[
   '00',
   '01',
   '02',
@@ -62,7 +77,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
     if (widget.option == "colour") {
       return Container(
         child: DropdownButton<String>(
-          value: list2.first,
+          value: widget.valueNotifier.value,
           //isExpanded: true,
           hint: Text('Show available colours'),
 
@@ -76,6 +91,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
             // This is called when the user selects an item.
             setState(() {
               //dropdownValue = value!;
+              widget.valueNotifier.value = value ?? "0";
             });
           },
           items: list2.map<DropdownMenuItem<String>>((String value) {
@@ -148,7 +164,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
     } else {
       return Container(
         child: DropdownButton<String>(
-          value: sizeList.first,
+          value: widget.valueNotifier.value,
           //isExpanded: true,
           hint: Text('Show available colours'),
 
@@ -162,11 +178,12 @@ class _DropdownBtnState extends State<DropdownBtn> {
             // This is called when the user selects an item.
             setState(() {
               //dropdownValue = value!;
+              widget.valueNotifier.value = value ?? "0";
             });
           },
           items: sizeList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
-              value: SizeConv.getCode(value),
+              value: value,
               child: Text(
                 value,
                 style: TextStyle(fontSize: 16),
