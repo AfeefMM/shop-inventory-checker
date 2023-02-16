@@ -62,4 +62,8 @@ class SQLData {
   static String checkAvailability(String style, String size, String colour) {
     return "Select ivonhd from TIGERPOS.dbo.skinvy where ivskun like '${style}%${colour}${size}'";
   }
+
+  static String getAvailableSizes(String style) {
+    return "Select DISTINCT SUBSTRING(ivskun,12,2) as sizes from TIGERPOS.dbo.skinvy where ivskun like '${style}%'";
+  }
 }

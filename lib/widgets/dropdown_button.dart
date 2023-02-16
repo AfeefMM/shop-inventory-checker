@@ -69,6 +69,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
   void initState() {
     super.initState();
     fetchAndShow();
+    fetchAndShowSizes();
   }
 
   static get styleCode => null;
@@ -222,6 +223,41 @@ class _DropdownBtnState extends State<DropdownBtn> {
       print(e);
     }
     throw Exception('Failed to load');
+  }
+
+  Future<List<String>> getItemSizes() async {
+    try {
+      await SqlConn.connect(
+          ip: SQLData.ip,
+          port: SQLData.port,
+          databaseName: SQLData.databaseName,
+          username: SQLData.username,
+          password: SQLData.password);
+      print("connected to server");
+      var style = SQLData.getStyle(widget.styleCode);
+
+      var result = await SqlConn.readData(SQLData.getAvailableSizes(style));
+      if (result == '[]') {
+        var snackBar = SnackBar(content: Text("sizes not found"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        var colours1 = result.replaceAll(RegExp(r'[^0-9,]'), '');
+        print("sizes: " + colours1);
+        var sList = colours1.toString().split(",");
+        return sList;
+      }
+    } catch (e) {
+      print(e);
+    }
+    throw Exception('Failed to load');
+  }
+
+  Future<void> fetchAndShowSizes() async {
+    final sizes = await getItemSizes();
+    setState(() {
+      print("linked the size lists");
+      sizeList = sizes;
+    });
   }
 
   Future<void> fetchAndShow() async {
