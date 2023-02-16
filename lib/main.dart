@@ -7,6 +7,7 @@ import 'home/code_entry.dart';
 import 'home/description.dart';
 import 'home/display_page.dart';
 import 'home/options_page2.dart';
+import 'widgets/dropdown_button.dart';
 
 void main() {
   runApp(const GetMaterialApp(home: MyApp()));
@@ -20,7 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return SplashScreen(
         seconds: 5,
-        navigateAfterSeconds: CodeEntryPage(),
+        navigateAfterSeconds: DropdownBtn(
+          styleCode: '01048024',
+        ),
         image: new Image.asset('assets/Giordano-logo 1.png'),
         photoSize: 100.0,
         backgroundColor: AppColours.mainColor,

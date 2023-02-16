@@ -189,32 +189,13 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
               print("result: " + result.toString());
-              Get.to(() => OptionsPage(), arguments: result.toString());
-              //trying out new method
-              // final parsed =
-              //     json.decode(result.body).cast<Map<String, dynamic>>();
-              // parsed
-              //     .map<ItemPrice>((json) => ItemPrice.fromJson(json))
-              //     .toList();
-              //////////////////////
+              Get.to(() => OptionsPage(),
+                  arguments: [result.toString(), style]);
             }
           } else {
             print("result: " + result.toString());
-            Get.to(() => OptionsPage(), arguments: result.toString());
+            Get.to(() => OptionsPage(), arguments: [result.toString(), style]);
           }
-
-          // var priceJSON = jsonDecode(result);
-          // var price = ItemPrice.fromJson(priceJSON[0] as Map<String, dynamic>);
-
-          // var userMap = json.decode(result);
-          // List<String> priceData = List<String>.from(json.decode(result));
-
-          // List<String> priceList =
-          //     (jsonDecode(result) as List<dynamic>).cast<String>();
-
-          // var priceJson = ItemPrice.fromJson(userMap);
-
-          // print(price.toString());
 
           SqlConn.disconnect();
           print(SqlConn.isConnected);

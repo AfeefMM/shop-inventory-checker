@@ -8,11 +8,11 @@ import '../widgets/question_text.dart';
 import '../widgets/searchBtn.dart';
 
 class OptionsPage extends StatelessWidget {
-  var args = Get.arguments.toString();
-
+  var args = Get.arguments[0].toString();
+  var argsStyle = Get.arguments[1];
   @override
   Widget build(BuildContext context) {
-    print("argument in next page" + args.split(".")[0]);
+    print("argument style:" + argsStyle);
     //  args = args.split(".")[0];
     var priceNum = args.replaceAll(RegExp(r'[^0-9.]'), '');
     var price = double.parse(priceNum);
@@ -53,7 +53,7 @@ class OptionsPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(75, 75, 1, 10),
                 child: QuestionText(
-                  text: "AED " + price.toString(),
+                  text: "AED " + price.toStringAsFixed(2),
                   size: 32,
                 ),
               ),
@@ -72,7 +72,11 @@ class OptionsPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Expanded(child: Center(child: DropdownBtn())),
+              // Expanded(
+              //     child: Center(
+              //         child: DropdownBtn(
+              //   styleCode: argsStyle,
+              // ))),
               // Expanded(child: Center(child: DropdownBtn())),
             ],
           ),
