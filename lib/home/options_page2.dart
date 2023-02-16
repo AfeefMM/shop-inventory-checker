@@ -64,44 +64,44 @@ class OptionsPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              QuestionText(text: 'Select a colour'),
-              QuestionText(text: 'Select a size'),
+              QuestionText(text: 'Colours available'),
+              // QuestionText(text: 'Select a size'),
             ],
           ),
           //search each button
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Expanded(
-              //     child: Center(
-              //         child: DropdownBtn(
-              //   styleCode: argsStyle,
-              // ))),
+              Expanded(
+                  child: Center(
+                      child: DropdownBtn(
+                styleCode: argsStyle,
+              ))),
               // Expanded(child: Center(child: DropdownBtn())),
             ],
           ),
           Spacer(),
           //search all buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-                child: SearchBtn(
-                  text: 'Search all colours',
-                  option: 1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-                child: SearchBtn(
-                  text: 'Search all sizes',
-                  option: 1,
-                ),
-              ),
-            ],
-          ),
-          //promotions button
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
+          //       child: SearchBtn(
+          //         text: 'Search all colours',
+          //         option: 1,
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
+          //       child: SearchBtn(
+          //         text: 'Search all sizes',
+          //         option: 1,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // //promotions button
 
           Spacer()
         ],
