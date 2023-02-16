@@ -20,6 +20,8 @@ class _OptionsPageState extends State<OptionsPage> {
   final ValueNotifier<String?> dropdownSize = ValueNotifier(null);
   final ValueNotifier<String?> dropdownColour = ValueNotifier(null);
 
+  String availVal = "0";
+
   var args = Get.arguments[0].toString();
   var descItem = "";
   var argsStyle = Get.arguments[1];
@@ -133,13 +135,14 @@ class _OptionsPageState extends State<OptionsPage> {
           ),
           Spacer(),
           //search all buttons
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
                 child: checkerBtn(),
               ),
+              QuestionText(text: "Available stock: " + availVal)
               // Padding(
               //   padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
               //   child: SearchBtn(
@@ -195,13 +198,12 @@ class _OptionsPageState extends State<OptionsPage> {
             password: SQLData.password);
 
         print(SqlConn.isConnected);
-        print("size " + size + " colour:  " + colour);
         var descResult = await SqlConn.readData(
             SQLData.checkAvailability(argsStyle, size, colour));
         print("number of stock: " + descResult.toString());
-        descResult = descResult
-            .toString()
-            .substring(12, descResult.toString().length - 3);
+        setState(() {
+          availVal = descResult.replaceAll(RegExp(r'[^0-9.]'), '');
+        });
       },
       style: ElevatedButton.styleFrom(
           padding: EdgeInsets.fromLTRB(24, 13, 24, 13),
