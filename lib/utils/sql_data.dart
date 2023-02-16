@@ -58,4 +58,8 @@ class SQLData {
   static String descQuery(String style) {
     return "Select smedes from TIGERPOS.dbo.mfstyl where smstyl like '${style}%'";
   }
+
+  static String checkAvailability(String style, String size, String colour) {
+    return "Select ivonhd from TIGERPOS.dbo.skinvy where ivskun like '${style}%${colour}${size}'";
+  }
 }

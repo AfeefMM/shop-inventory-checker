@@ -9,12 +9,14 @@ import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 import '../home/display_page.dart';
+import '../utils/size_convertor.dart';
 import '../utils/sql_data.dart';
 import 'btn_text.dart';
 
 class DropdownBtn extends StatefulWidget {
-  const DropdownBtn({super.key, required this.styleCode});
+  const DropdownBtn({super.key, required this.styleCode, required this.option});
   final String styleCode;
+  final String option;
   @override
   State<DropdownBtn> createState() => _DropdownBtnState();
 }
@@ -34,7 +36,16 @@ List<String> list2 = <String>[
   '12',
   '13'
 ];
-
+List<String> sizeList = <String>[
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '99'
+];
 List<ItemColour> list = [];
 
 class _DropdownBtnState extends State<DropdownBtn> {
@@ -48,91 +59,123 @@ class _DropdownBtnState extends State<DropdownBtn> {
   static get styleCode => null;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: DropdownButton<String>(
-        value: list2.first,
-        //isExpanded: true,
-        hint: Text('Show available colours'),
+    if (widget.option == "colour") {
+      return Container(
+        child: DropdownButton<String>(
+          value: list2.first,
+          //isExpanded: true,
+          hint: Text('Show available colours'),
 
-        elevation: 16,
-        menuMaxHeight: Dimensions.heightDropDown,
-        borderRadius: BorderRadius.circular(6),
-        dropdownColor: AppColours.btnTextColour,
-        underline: SizedBox(),
-        style: const TextStyle(color: AppColours.btnColour),
-        onChanged: (String? value) {
-          // This is called when the user selects an item.
-          setState(() {
-            //dropdownValue = value!;
-          });
-        },
-        items: list2.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: TextStyle(fontSize: 16),
-            ),
-          );
-        }).toList(),
+          elevation: 16,
+          menuMaxHeight: Dimensions.heightDropDown,
+          borderRadius: BorderRadius.circular(6),
+          dropdownColor: AppColours.btnTextColour,
+          underline: SizedBox(),
+          style: const TextStyle(color: AppColours.btnColour),
+          onChanged: (String? value) {
+            // This is called when the user selects an item.
+            setState(() {
+              //dropdownValue = value!;
+            });
+          },
+          items: list2.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          }).toList(),
 
-        // items: list
-        //     .map(
-        //       (e) => DropdownMenuItem(
-        //           value: e,
-        //           child: Padding(
-        //             padding: const EdgeInsets.fromLTRB(5, 1, 1, 1),
-        //             child: Text(
-        //               e.skcolr.toString(),
-        //               style: const TextStyle(
-        //                 fontSize: 16,
-        //               ),
-        //             ),
-        //           )),
-        //     )
-        //     .toList(),
-      ),
-    );
-    // Container(
-    //   child: DropdownButton<String>(
-    //     value: list2.first,
-    //     //isExpanded: true,
-    //     hint: Text('Search for colour'),
-    //     elevation: 16,
-    //     menuMaxHeight: Dimensions.heightDropDown,
-    //     borderRadius: BorderRadius.circular(6),
-    //     dropdownColor: AppColours.btnTextColour,
-    //     underline: SizedBox(),
-    //     style: const TextStyle(color: AppColours.btnColour),
-    //     onChanged: (String? value) {
-    //       // This is called when the user selects an item.
-    //       setState(() {
-    //         //dropdownValue = value!;
-    //       });
-    //     },
-    //     items: list2.map<DropdownMenuItem<String>>((String value) {
-    //       return DropdownMenuItem<String>(
-    //         value: value,
-    //         child: Text(value),
-    //       );
-    //     }).toList(),
-    //     // items: list
-    //     //     .map(
-    //     //       (e) => DropdownMenuItem(
-    //     //           value: e,
-    //     //           child: Padding(
-    //     //             padding: const EdgeInsets.fromLTRB(5, 1, 1, 1),
-    //     //             child: Text(
-    //     //               e.skcolr,
-    //     //               style: const TextStyle(
-    //     //                 fontSize: 16,
-    //     //               ),
-    //     //             ),
-    //     //           )),
-    //     //     )
-    //     //     .toList(),
-    //   ),
-    // );
+          // items: list
+          //     .map(
+          //       (e) => DropdownMenuItem(
+          //           value: e,
+          //           child: Padding(
+          //             padding: const EdgeInsets.fromLTRB(5, 1, 1, 1),
+          //             child: Text(
+          //               e.skcolr.toString(),
+          //               style: const TextStyle(
+          //                 fontSize: 16,
+          //               ),
+          //             ),
+          //           )),
+          //     )
+          //     .toList(),
+        ),
+      );
+      // Container(
+      //   child: DropdownButton<String>(
+      //     value: list2.first,
+      //     //isExpanded: true,
+      //     hint: Text('Search for colour'),
+      //     elevation: 16,
+      //     menuMaxHeight: Dimensions.heightDropDown,
+      //     borderRadius: BorderRadius.circular(6),
+      //     dropdownColor: AppColours.btnTextColour,
+      //     underline: SizedBox(),
+      //     style: const TextStyle(color: AppColours.btnColour),
+      //     onChanged: (String? value) {
+      //       // This is called when the user selects an item.
+      //       setState(() {
+      //         //dropdownValue = value!;
+      //       });
+      //     },
+      //     items: list2.map<DropdownMenuItem<String>>((String value) {
+      //       return DropdownMenuItem<String>(
+      //         value: value,
+      //         child: Text(value),
+      //       );
+      //     }).toList(),
+      //     // items: list
+      //     //     .map(
+      //     //       (e) => DropdownMenuItem(
+      //     //           value: e,
+      //     //           child: Padding(
+      //     //             padding: const EdgeInsets.fromLTRB(5, 1, 1, 1),
+      //     //             child: Text(
+      //     //               e.skcolr,
+      //     //               style: const TextStyle(
+      //     //                 fontSize: 16,
+      //     //               ),
+      //     //             ),
+      //     //           )),
+      //     //     )
+      //     //     .toList(),
+      //   ),
+      // );
+    } else {
+      return Container(
+        child: DropdownButton<String>(
+          value: sizeList.first,
+          //isExpanded: true,
+          hint: Text('Show available colours'),
+
+          elevation: 16,
+          menuMaxHeight: Dimensions.heightDropDown,
+          borderRadius: BorderRadius.circular(6),
+          dropdownColor: AppColours.btnTextColour,
+          underline: SizedBox(),
+          style: const TextStyle(color: AppColours.btnColour),
+          onChanged: (String? value) {
+            // This is called when the user selects an item.
+            setState(() {
+              //dropdownValue = value!;
+            });
+          },
+          items: sizeList.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: SizeConv.getCode(value),
+              child: Text(
+                value,
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          }).toList(),
+        ),
+      );
+    }
   }
 
 //sql functions to obtain the colours
@@ -172,3 +215,6 @@ class _DropdownBtnState extends State<DropdownBtn> {
     });
   }
 }
+/**
+ 
+ */

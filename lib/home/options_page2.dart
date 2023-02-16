@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 import '../utils/sql_data.dart';
+import '../widgets/btn_text.dart';
 import '../widgets/dropdown_button.dart';
 import '../widgets/question_text.dart';
 import '../widgets/searchBtn.dart';
@@ -15,6 +16,9 @@ class OptionsPage extends StatefulWidget {
 }
 
 class _OptionsPageState extends State<OptionsPage> {
+  final ValueNotifier<String?> dropdownSize = ValueNotifier(null);
+  final ValueNotifier<String?> dropdownColour = ValueNotifier(null);
+
   var args = Get.arguments[0].toString();
   var descItem = "";
   var argsStyle = Get.arguments[1];
@@ -101,8 +105,8 @@ class _OptionsPageState extends State<OptionsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              QuestionText(text: 'Colours available'),
-              // QuestionText(text: 'Select a size'),
+              QuestionText(text: 'Select a colour'),
+              QuestionText(text: 'Select a size'),
             ],
           ),
           //search each button
@@ -113,31 +117,37 @@ class _OptionsPageState extends State<OptionsPage> {
                   child: Center(
                       child: DropdownBtn(
                 styleCode: argsStyle,
+                option: "colour",
+                //valueNotifier: dropdownColour,
+              ))),
+              Expanded(
+                  child: Center(
+                      child: DropdownBtn(
+                styleCode: argsStyle,
+                option: "",
+                //valueNotifier: dropdownSize,
               ))),
               // Expanded(child: Center(child: DropdownBtn())),
             ],
           ),
           Spacer(),
           //search all buttons
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-          //       child: SearchBtn(
-          //         text: 'Search all colours',
-          //         option: 1,
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-          //       child: SearchBtn(
-          //         text: 'Search all sizes',
-          //         option: 1,
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
+              //   child: checkerBtn(),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
+              //   child: SearchBtn(
+              //     text: 'Search all sizes',
+              //     option: 1,
+              //   ),
+              // ),
+            ],
+          ),
           // //promotions button
 
           Spacer()
@@ -164,5 +174,41 @@ class _OptionsPageState extends State<OptionsPage> {
     setState(() {
       descItem = descResult.toString();
     });
+  }
+
+  Widget checkerBtn() {
+    //get value
+    var size = dropdownSize.value!;
+    var colour = dropdownColour.value!;
+
+    return OutlinedButton(
+      onPressed: () async {
+        //sql search to obtain availability of product code
+        print("attempting to connect");
+        await SqlConn.connect(
+            ip: SQLData.ip,
+            port: SQLData.port,
+            databaseName: SQLData.databaseName,
+            username: SQLData.username,
+            password: SQLData.password);
+
+        print(SqlConn.isConnected);
+        var descResult = await SqlConn.readData(
+            SQLData.checkAvailability(argsStyle, size, colour));
+        print("number of stock: " + descResult.toString());
+        descResult = descResult
+            .toString()
+            .substring(12, descResult.toString().length - 3);
+      },
+      style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.fromLTRB(24, 13, 24, 13),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          backgroundColor: AppColours.btnColour,
+          textStyle: TextStyle(color: AppColours.btnTextColour)),
+      child: BtnText(
+        text: "Check",
+      ),
+    );
   }
 }
