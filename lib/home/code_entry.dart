@@ -104,6 +104,14 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
                     padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
                     child: TextField(
                       controller: itemCodeController,
+                      maxLength: 12,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      ],
+                      onChanged: (value) {
+                        if (value.length != 12) {}
+                      },
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -177,10 +185,29 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
           if (result == '[]') {
             result = await SqlConn.readData(SQLData.priceNormalQuery(style));
             print("executes 2nd query");
+            if (result == '[]') {
+              print("not found");
+
+              var snackBar = SnackBar(content: Text("item not found"));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            } else {
+              //trying out new method
+              final parsed =
+                  json.decode(result.body).cast<Map<String, dynamic>>();
+              parsed
+                  .map<ItemPrice>((json) => ItemPrice.fromJson(json))
+                  .toList();
+              //////////////////////
+              print("result: " + result.toString());
+              Get.to(() => OptionsPage(), arguments: result.toString());
+            }
+          } else {
+            print("result: " + result.toString());
+            Get.to(() => OptionsPage(), arguments: result.toString());
           }
-          print("result: " + result.toString());
+
           // var priceJSON = jsonDecode(result);
-          // var price = ItemPrice.fromJson(priceJSON);
+          // var price = ItemPrice.fromJson(priceJSON[0] as Map<String, dynamic>);
 
           // var userMap = json.decode(result);
           // List<String> priceData = List<String>.from(json.decode(result));
@@ -190,8 +217,8 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
 
           // var priceJson = ItemPrice.fromJson(userMap);
 
-          // print(price);
-          Get.to(() => OptionsPage(), arguments: result.toString());
+          // print(price.toString());
+
           SqlConn.disconnect();
           print(SqlConn.isConnected);
         } catch (e) {

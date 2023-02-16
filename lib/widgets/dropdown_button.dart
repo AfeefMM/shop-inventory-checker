@@ -8,8 +8,8 @@ import '../home/display_page.dart';
 import 'btn_text.dart';
 
 class DropdownBtn extends StatefulWidget {
-  const DropdownBtn({super.key});
-
+  const DropdownBtn({super.key, required this.styleCode});
+  final styleCode;
   @override
   State<DropdownBtn> createState() => _DropdownBtnState();
 }

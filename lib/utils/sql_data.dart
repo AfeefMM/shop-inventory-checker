@@ -50,4 +50,8 @@ class SQLData {
   static String priceNormalQuery(String style) {
     return "Select top 1 pcsprc from TIGERPOS.dbo.mfprch where pccolr like '' and pcstyl like '${style}%' order by pctxdt desc; ";
   }
+
+  static String coloursQuery(String style) {
+    return "Select DISTINCT(skcolr) from TIGERPOS.dbo.mfskun and skstyl like '${style}%'";
+  }
 }
