@@ -23,8 +23,9 @@ class CodeEntryPage extends StatefulWidget {
 }
 
 class _CodeEntryPageState extends State<CodeEntryPage> {
+  TextEditingController itemCodeController = TextEditingController();
   String _scanBarcode = 'Enter code';
-
+  bool isBarcode = false;
   Future<void> barcodeScan() async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -37,9 +38,54 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
     }
     if (!mounted) return;
     setState(() {
+      isBarcode = true;
       _scanBarcode = barcodeScanRes;
+
       print("var updated");
     });
+    try {
+      var itemVal = barcodeScanRes;
+      print("attempting to connect");
+      await SqlConn.connect(
+          ip: SQLData.ip,
+          port: SQLData.port,
+          databaseName: SQLData.databaseName,
+          username: SQLData.username,
+          password: SQLData.password);
+
+      print(SqlConn.isConnected);
+      var snackBar = SnackBar(content: Text("connected"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      var style = SQLData.getStyle(itemVal),
+          colour = SQLData.getColour(itemVal),
+          size = SQLData.getSize(itemVal);
+      print("connected");
+      print("sent query");
+      var result =
+          await SqlConn.readData(SQLData.priceColourQuery(style, colour));
+      if (result == '[]') {
+        result = await SqlConn.readData(SQLData.priceNormalQuery(style));
+        print("executes 2nd query");
+        if (result == '[]') {
+          print("not found");
+
+          var snackBar = SnackBar(content: Text("item not found"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } else {
+          print("result: " + result.toString());
+          Get.to(() => OptionsPage(), arguments: [result.toString(), style]);
+        }
+      } else {
+        print("result: " + result.toString());
+        Get.to(() => OptionsPage(), arguments: [result.toString(), style]);
+      }
+
+      SqlConn.disconnect();
+      print(SqlConn.isConnected);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget barcodeScanner(text) {
@@ -58,8 +104,6 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
       ),
     );
   }
-
-  TextEditingController itemCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
