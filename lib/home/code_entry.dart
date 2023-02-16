@@ -233,6 +233,8 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
               print("result: " + result.toString());
+              var descResult = await SqlConn.readData(SQLData.descQuery(style));
+              print("description: " + descResult.toString());
               Get.to(() => OptionsPage(),
                   arguments: [result.toString(), style]);
             }

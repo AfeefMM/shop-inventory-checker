@@ -54,4 +54,8 @@ class SQLData {
   static String coloursQuery(String style) {
     return "Select DISTINCT(skcolr) from TIGERPOS.dbo.mfskun where skstyl like '${style}%'";
   }
+
+  static String descQuery(String style) {
+    return "Select smedes from TIGERPOS.dbo.mfstyl where smstyl like '${style}%'";
+  }
 }

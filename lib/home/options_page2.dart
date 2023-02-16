@@ -2,17 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:get/get.dart';
+import 'package:sql_conn/sql_conn.dart';
 
+import '../utils/sql_data.dart';
 import '../widgets/dropdown_button.dart';
 import '../widgets/question_text.dart';
 import '../widgets/searchBtn.dart';
 
-class OptionsPage extends StatelessWidget {
+class OptionsPage extends StatefulWidget {
+  @override
+  State<OptionsPage> createState() => _OptionsPageState();
+}
+
+class _OptionsPageState extends State<OptionsPage> {
   var args = Get.arguments[0].toString();
+  var descItem = "";
   var argsStyle = Get.arguments[1];
   @override
+  void initState() {
+    // TODO: implement initState
+    itemDesc(argsStyle);
+    super.initState();
+  }
+
+  //var argsDesc = Get.arguments[2];
+  @override
   Widget build(BuildContext context) {
-    print("argument style:" + argsStyle);
+    // print("argument desc:" + argsDesc);
     //  args = args.split(".")[0];
     var priceNum = args.replaceAll(RegExp(r'[^0-9.]'), '');
     var price = double.parse(priceNum);
@@ -61,6 +77,27 @@ class OptionsPage extends StatelessWidget {
           ),
           Spacer(),
           //textfield
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QuestionText(
+                  text: "Description",
+                  size: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(
+                width: 350,
+                child: QuestionText(
+                  text: descItem,
+                  size: 16,
+                ),
+              )
+            ],
+          ),
+          Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -107,5 +144,25 @@ class OptionsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> itemDesc(style) async {
+    print("attempting to connect");
+    await SqlConn.connect(
+        ip: SQLData.ip,
+        port: SQLData.port,
+        databaseName: SQLData.databaseName,
+        username: SQLData.username,
+        password: SQLData.password);
+
+    print(SqlConn.isConnected);
+    var descResult = await SqlConn.readData(SQLData.descQuery(style));
+    print("description: " + descResult.toString());
+    descResult =
+        descResult.toString().substring(12, descResult.toString().length - 3);
+
+    setState(() {
+      descItem = descResult.toString();
+    });
   }
 }
