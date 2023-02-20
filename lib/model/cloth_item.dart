@@ -1,28 +1,18 @@
-class ClothItem {
-  String productCode;
-  String styleCode;
-  String brandCode;
-  String colourCode;
-  String sizeCode;
-  String categoryCode;
-  String styleDesc;
-  String brandDesc;
-  String colourDesc;
-  String sizeDesc;
-  String categoryDesc;
-  String productImg;
+import 'dart:core';
 
-  ClothItem(
-      {required this.productCode,
-      required this.styleCode,
-      required this.brandCode,
-      required this.colourCode,
-      required this.sizeCode,
-      required this.categoryCode,
-      required this.styleDesc,
-      required this.brandDesc,
-      required this.colourDesc,
-      required this.sizeDesc,
-      required this.categoryDesc,
-      required this.productImg});
+class ClothItem {
+  final String ivskun;
+
+//  final String ivonhd;
+
+  ClothItem({
+    required this.ivskun,
+    //required this.ivonhd,
+  });
+
+  factory ClothItem.fromJSON(Map<String, dynamic> json) {
+    return ClothItem(ivskun: json['ivskun']
+        //, ivonhd: json['ivonhd']
+        );
+  }
 }

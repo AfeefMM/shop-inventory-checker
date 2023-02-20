@@ -10,6 +10,7 @@ import '../widgets/btn_text.dart';
 import '../widgets/dropdown_button.dart';
 import '../widgets/question_text.dart';
 import '../widgets/searchBtn.dart';
+import 'display_page.dart';
 
 class OptionsPage extends StatefulWidget {
   @override
@@ -154,7 +155,21 @@ class _OptionsPageState extends State<OptionsPage> {
           ),
           // //promotions button
 
-          Spacer()
+          Spacer(),
+          OutlinedButton(
+            onPressed: () {
+              Get.to(() => DisplayPage(), arguments: argsStyle);
+            },
+            style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(24, 13, 24, 13),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                backgroundColor: AppColours.btnColour,
+                textStyle: TextStyle(color: AppColours.btnTextColour)),
+            child: BtnText(
+              text: "Check for all",
+            ),
+          ),
         ],
       ),
     );
@@ -203,6 +218,10 @@ class _OptionsPageState extends State<OptionsPage> {
         print("number of stock: " + descResult.toString());
         setState(() {
           availVal = descResult.replaceAll(RegExp(r'[^0-9.]'), '');
+          _showAlert(" stock left = " + availVal);
+          // var snackBar =
+          //     SnackBar(content: Text("Stock available = " + availVal));
+          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
         });
       },
       style: ElevatedButton.styleFrom(
@@ -214,6 +233,36 @@ class _OptionsPageState extends State<OptionsPage> {
       child: BtnText(
         text: "Check",
       ),
+    );
+  }
+
+  Future<void> _showAlert(String msg) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Stock Status'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(msg),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Back'),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColours.btnColour,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

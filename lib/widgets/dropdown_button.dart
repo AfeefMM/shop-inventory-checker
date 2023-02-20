@@ -26,31 +26,8 @@ class DropdownBtn extends StatefulWidget {
   State<DropdownBtn> createState() => _DropdownBtnState();
 }
 
-List<String> list2 = <String>[
-  'One',
-  'Two',
-  'Three',
-  'Four',
-  'Five',
-  'Six',
-  'Seven',
-  'Eight',
-  'Nine',
-  '10',
-  '11',
-  '12',
-  '13'
-];
-List<String> sizeList = <String>[
-  'XS',
-  'S',
-  'M',
-  'L',
-  'XL',
-  'XXL',
-  'XXXL',
-  'FREE SIZE'
-];
+List<String> list2 = <String>[];
+List<String> sizeList = <String>[];
 List<String> sizeList2 = <String>[
   '00',
   '01',
@@ -167,7 +144,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
         child: DropdownButton<String>(
           value: widget.valueNotifier.value,
           //isExpanded: true,
-          hint: Text('Show available colours'),
+          hint: Text('Show available sizes'),
 
           elevation: 16,
           menuMaxHeight: Dimensions.heightDropDown,
@@ -184,9 +161,9 @@ class _DropdownBtnState extends State<DropdownBtn> {
           },
           items: sizeList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
-              value: value,
+              value: SizeConv.getSize(value),
               child: Text(
-                value,
+                SizeConv.getSize(value),
                 style: TextStyle(fontSize: 16),
               ),
             );
@@ -216,7 +193,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
       } else {
         var colours1 = result.replaceAll(RegExp(r'[^0-9,]'), '');
         print(colours1);
-        list2 = colours1.toString().split(",");
+        var list2 = colours1.toString().split(",");
         return list2;
       }
     } catch (e) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SQLData {
-  static const String ip = "192.168.0.50";
+  static const String ip = "192.168.1.100";
   static const String port = "1433";
   static const String databaseName = "TIGERPOS";
   static const String username = "sa";
@@ -56,7 +56,7 @@ class SQLData {
   }
 
   static String descQuery(String style) {
-    return "Select smedes from TIGERPOS.dbo.mfstyl where smstyl like '${style}%'";
+    return "Select TOP 1 smedes from TIGERPOS.dbo.mfstyl where smstyl like '${style}%'";
   }
 
   static String checkAvailability(String style, String size, String colour) {
@@ -64,6 +64,14 @@ class SQLData {
   }
 
   static String getAvailableSizes(String style) {
-    return "Select DISTINCT SUBSTRING(ivskun,12,2) as sizes from TIGERPOS.dbo.skinvy where ivskun like '${style}%'";
+    return "Select DISTINCT SUBSTRING(ivskun,14,2) as sizes from TIGERPOS.dbo.skinvy where ivskun like '${style}%'";
+  }
+
+  static String getAvailableItems(String style) {
+    return "Select ivskun from TIGERPOS.dbo.skinvy where ivskun like '${style}%' and ivonhd <> 0";
+  }
+
+  static String getAvailableCount(String style) {
+    return "Select ivonhd from TIGERPOS.dbo.skinvy where ivskun like '${style}%' and ivonhd <> 0";
   }
 }
