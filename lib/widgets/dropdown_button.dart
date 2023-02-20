@@ -192,7 +192,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
         var colours1 = result.replaceAll(RegExp(r'[^0-9,]'), '');
-        print(colours1);
+        //print(colours1);
         var list2 = colours1.toString().split(",");
         return list2;
       }
@@ -219,7 +219,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
         var colours1 = result.replaceAll(RegExp(r'[^0-9,]'), '');
-        print("sizes: " + colours1);
+        // print("sizes: " + colours1);
         var sList = colours1.toString().split(",");
         return sList;
       }
@@ -232,7 +232,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
   Future<void> fetchAndShowSizes() async {
     final sizes = await getItemSizes();
     setState(() {
-      print("linked the size lists");
+      // print("linked the size lists");
       sizeList = sizes;
     });
   }
@@ -240,7 +240,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
   Future<void> fetchAndShow() async {
     final colours = await getItemColours();
     setState(() {
-      print("linked the lists");
+      // print("linked the lists");
       list2 = colours;
     });
   }

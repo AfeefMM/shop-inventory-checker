@@ -26,10 +26,14 @@ class _OptionsPageState extends State<OptionsPage> {
   var args = Get.arguments[0].toString();
   var descItem = "";
   var argsStyle = Get.arguments[1];
+  var argsColour = Get.arguments[2];
+  var argsSize = Get.arguments[3];
   @override
   void initState() {
     // TODO: implement initState
     itemDesc(argsStyle);
+    onStartInv(argsStyle, argsSize, argsColour);
+    // print("argument : " + argsStyle);
     super.initState();
   }
 
@@ -40,7 +44,7 @@ class _OptionsPageState extends State<OptionsPage> {
     //  args = args.split(".")[0];
     var priceNum = args.replaceAll(RegExp(r'[^0-9.]'), '');
     var price = double.parse(priceNum);
-    print("argument in next page: " + price.toStringAsFixed(2));
+    // print("argument in next page: " + price.toStringAsFixed(2));
 
     // TODO: implement build
     return Scaffold(
@@ -83,7 +87,7 @@ class _OptionsPageState extends State<OptionsPage> {
               ),
             ],
           ),
-          Spacer(),
+
           //textfield
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -105,7 +109,7 @@ class _OptionsPageState extends State<OptionsPage> {
               )
             ],
           ),
-          Spacer(),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -134,45 +138,65 @@ class _OptionsPageState extends State<OptionsPage> {
               // Expanded(child: Center(child: DropdownBtn())),
             ],
           ),
-          Spacer(),
+
           //search all buttons
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-                child: checkerBtn(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
+                    child: checkerBtn(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Get.to(() => DisplayPage(), arguments: argsStyle);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(24, 13, 24, 13),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0)),
+                          backgroundColor: AppColours.btnColour,
+                          textStyle:
+                              TextStyle(color: AppColours.btnTextColour)),
+                      child: BtnText(
+                        text: "Check for all",
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              QuestionText(text: "Available stock: " + availVal)
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
-              //   child: SearchBtn(
-              //     text: 'Search all sizes',
-              //     option: 1,
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QuestionText(text: "Available stock: " + availVal),
+              ),
             ],
           ),
           // //promotions button
-
-          Spacer(),
-          OutlinedButton(
-            onPressed: () {
-              Get.to(() => DisplayPage(), arguments: argsStyle);
-            },
-            style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.fromLTRB(24, 13, 24, 13),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0)),
-                backgroundColor: AppColours.btnColour,
-                textStyle: TextStyle(color: AppColours.btnTextColour)),
-            child: BtnText(
-              text: "Check for all",
-            ),
-          ),
         ],
       ),
     );
+  }
+
+  Future<void> onStartInv(argsStyle, size, colour) async {
+    await SqlConn.connect(
+        ip: SQLData.ip,
+        port: SQLData.port,
+        databaseName: SQLData.databaseName,
+        username: SQLData.username,
+        password: SQLData.password);
+
+    print(SqlConn.isConnected);
+    var descResult = await SqlConn.readData(
+        SQLData.checkAvailability(argsStyle, size, colour));
+
+    setState(() {
+      availVal = descResult.replaceAll(RegExp(r'[^0-9.]'), '');
+    });
   }
 
   Future<void> itemDesc(style) async {
@@ -186,7 +210,7 @@ class _OptionsPageState extends State<OptionsPage> {
 
     print(SqlConn.isConnected);
     var descResult = await SqlConn.readData(SQLData.descQuery(style));
-    print("description: " + descResult.toString());
+    //print("description: " + descResult.toString());
     descResult =
         descResult.toString().substring(12, descResult.toString().length - 3);
 

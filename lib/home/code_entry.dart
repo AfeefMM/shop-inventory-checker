@@ -74,11 +74,13 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         } else {
           print("result: " + result.toString());
-          Get.to(() => OptionsPage(), arguments: [result.toString(), style]);
+          Get.to(() => OptionsPage(),
+              arguments: [result.toString(), style, colour, size]);
         }
       } else {
         print("result: " + result.toString());
-        Get.to(() => OptionsPage(), arguments: [result.toString(), style]);
+        Get.to(() => OptionsPage(),
+            arguments: [result.toString(), style, colour, size]);
       }
 
       SqlConn.disconnect();
