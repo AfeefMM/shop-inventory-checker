@@ -21,6 +21,7 @@ class Dimensions {
 
   static double widthImg = screenHeight / 1; //375/375
 
+  static double width5 = screenWidth / 1.5; //844/10
   static double width10 = screenHeight / 84.4; //844/10
   static double width20 = screenHeight / 42.2; //844/20
   static double width15 = screenHeight / 56.27; //844/15

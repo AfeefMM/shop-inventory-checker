@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_mgmt/home/table_view.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:get/get.dart';
@@ -87,7 +88,12 @@ class _OptionsPageState extends State<OptionsPage> {
               ),
             ],
           ),
-
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.67,
+            child: Divider(
+              color: AppColours.btnColour,
+            ),
+          ),
           //textfield
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +115,12 @@ class _OptionsPageState extends State<OptionsPage> {
               )
             ],
           ),
-
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.67,
+            child: Divider(
+              color: AppColours.btnColour,
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -138,7 +149,12 @@ class _OptionsPageState extends State<OptionsPage> {
               // Expanded(child: Center(child: DropdownBtn())),
             ],
           ),
-
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.67,
+            child: Divider(
+              color: AppColours.btnColour,
+            ),
+          ),
           //search all buttons
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -154,7 +170,7 @@ class _OptionsPageState extends State<OptionsPage> {
                     padding: const EdgeInsets.fromLTRB(1, 1, 10, 24),
                     child: OutlinedButton(
                       onPressed: () {
-                        Get.to(() => DisplayPage(), arguments: argsStyle);
+                        Get.to(() => DisplayTablePage(), arguments: argsStyle);
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(24, 13, 24, 13),

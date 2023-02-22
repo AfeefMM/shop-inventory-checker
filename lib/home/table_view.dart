@@ -7,16 +7,17 @@ import 'package:inventory_mgmt/home/description.dart';
 import 'package:inventory_mgmt/model/cloth_item.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:get/get.dart';
+import 'package:inventory_mgmt/widgets/question_text.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 import '../utils/sql_data.dart';
 
-class DisplayPage extends StatefulWidget {
+class DisplayTablePage extends StatefulWidget {
   @override
-  State<DisplayPage> createState() => _DisplayPageState();
+  State<DisplayTablePage> createState() => _DisplayTablePageState();
 }
 
-class _DisplayPageState extends State<DisplayPage> {
+class _DisplayTablePageState extends State<DisplayTablePage> {
   var listIVSKUN = [];
   var listIVONHD = [];
   var styleCode = Get.arguments;
@@ -48,28 +49,63 @@ class _DisplayPageState extends State<DisplayPage> {
           ),
           backgroundColor: AppColours.mainColor,
         ),
-        body: ListView.builder(
-            itemCount: listIVSKUN.length,
-            itemBuilder: ((BuildContext context, int index) {
-              return Card(
-                child: ListTile(
-                  onTap: () {
-                    // Get.to(() => DescriptionPage(),
-                    //     arguments: [list1.elementAt(index).toString()]);
-                  },
-                  //leading: FlutterLogo(size: 72.0),
-                  title: Text("style code: " +
-                      listIVSKUN.elementAt(index).toString().substring(0, 8) +
-                      " " +
-                      listIVSKUN.elementAt(index).toString().substring(11, 13) +
-                      " " +
-                      listIVSKUN.elementAt(index).toString().substring(13)),
-                  subtitle: Text("inventory of item: " +
-                      listIVONHD.elementAt(index).toString()),
-                  isThreeLine: true,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QuestionText(
+                  text: "Style code: " + styleCode,
+                  size: 20,
                 ),
-              );
-            })));
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: DataTable(
+                    border:
+                        TableBorder.all(color: AppColours.btnColour, width: 2),
+                    columnSpacing: MediaQuery.of(context).size.width / 1.9,
+                    horizontalMargin: 12,
+                    columns: const [
+                      DataColumn(
+                        label: Expanded(child: Text('Style - Colour - Size')),
+                      ),
+                      DataColumn(
+                        label: Expanded(child: Text('On hand')),
+                      ),
+                    ],
+                    rows: List.generate(listIVSKUN.length, (index) {
+                      final y = listIVSKUN[index];
+
+                      final x = listIVONHD[index];
+
+                      return DataRow(cells: [
+                        DataCell(Container(
+                            child: Text(listIVSKUN
+                                    .elementAt(index)
+                                    .toString()
+                                    .substring(0, 8) +
+                                " " +
+                                listIVSKUN
+                                    .elementAt(index)
+                                    .toString()
+                                    .substring(11, 13) +
+                                " " +
+                                listIVSKUN
+                                    .elementAt(index)
+                                    .toString()
+                                    .substring(13)))),
+                        DataCell(Container(child: Text(x))),
+                      ]);
+                    }),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 
   Future<void> getItemsStyle(style) async {

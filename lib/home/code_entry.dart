@@ -238,11 +238,12 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               var descResult = await SqlConn.readData(SQLData.descQuery(style));
               print("description: " + descResult.toString());
               Get.to(() => OptionsPage(),
-                  arguments: [result.toString(), style]);
+                  arguments: [result.toString(), style, colour, size]);
             }
           } else {
             print("result: " + result.toString());
-            Get.to(() => OptionsPage(), arguments: [result.toString(), style]);
+            Get.to(() => OptionsPage(),
+                arguments: [result.toString(), style, colour, size]);
           }
 
           SqlConn.disconnect();
