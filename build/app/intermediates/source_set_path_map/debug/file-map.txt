@@ -24,3 +24,4 @@ com.example.inventory_mgmt.app-mergeDebugResources-22 /Users/afeefmahmood/Deskto
 com.example.inventory_mgmt.app-merged_res-23 /Users/afeefmahmood/Desktop/Giordano e-shop/inventory_mgmt/build/app/intermediates/merged_res/debug
 com.example.inventory_mgmt.app-packaged_res-24 /Users/afeefmahmood/Desktop/Giordano e-shop/inventory_mgmt/build/flutter_barcode_scanner/intermediates/packaged_res/debug
 com.example.inventory_mgmt.app-packaged_res-25 /Users/afeefmahmood/Desktop/Giordano e-shop/inventory_mgmt/build/flutter_plugin_android_lifecycle/intermediates/packaged_res/debug
+com.example.inventory_mgmt.app-packaged_res-26 /Users/afeefmahmood/Desktop/Giordano e-shop/inventory_mgmt/build/sql_conn/intermediates/packaged_res/debug

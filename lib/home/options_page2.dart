@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_mgmt/home/table_view.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
-import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:get/get.dart';
 import 'package:sql_conn/sql_conn.dart';
 
@@ -10,10 +9,10 @@ import '../utils/sql_data.dart';
 import '../widgets/btn_text.dart';
 import '../widgets/dropdown_button.dart';
 import '../widgets/question_text.dart';
-import '../widgets/searchBtn.dart';
-import 'display_page.dart';
 
 class OptionsPage extends StatefulWidget {
+  const OptionsPage({super.key});
+
   @override
   State<OptionsPage> createState() => _OptionsPageState();
 }
@@ -256,13 +255,13 @@ class _OptionsPageState extends State<OptionsPage> {
         var descResult = await SqlConn.readData(
             SQLData.checkAvailability(argsStyle, size, colour));
         print("number of stock: " + descResult.toString());
+
         setState(() {
           availVal = descResult.replaceAll(RegExp(r'[^0-9.]'), '');
           _showAlert(" stock left = " + availVal);
-          // var snackBar =
-          //     SnackBar(content: Text("Stock available = " + availVal));
-          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
         });
+
+        SqlConn.disconnect();
       },
       style: ElevatedButton.styleFrom(
           padding: EdgeInsets.fromLTRB(24, 13, 24, 13),

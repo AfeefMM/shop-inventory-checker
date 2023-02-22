@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
+import 'package:inventory_mgmt/home/table_view.dart';
 import 'package:inventory_mgmt/model/item_price.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
 import 'package:inventory_mgmt/utils/dimensions.dart';
@@ -15,6 +16,7 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 import '../widgets/question_text.dart';
+import '../widgets/table_btn.dart';
 import 'options_page2.dart';
 
 class CodeEntryPage extends StatefulWidget {
@@ -136,7 +138,7 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(25, 0, 4, 10),
                   child: QuestionText(
-                    text: 'Enter code manually',
+                    text: 'Enter code or style code',
                     size: 14,
                   ),
                 ),
@@ -178,9 +180,14 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(1, 24, 1, 24),
-                  child: searchBtn('Search', itemCodeController.text),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(1, 24, 1, 24),
+                      child: searchBtn('Search', itemCodeController.text),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1, 1, 1, 24),
@@ -218,33 +225,68 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
           var snackBar = SnackBar(content: Text("connected"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-          var style = SQLData.getStyle(itemVal),
-              colour = SQLData.getColour(itemVal),
-              size = SQLData.getSize(itemVal);
-          print("connected");
-          print("sent query");
-          var result =
-              await SqlConn.readData(SQLData.priceColourQuery(style, colour));
-          if (result == '[]') {
-            result = await SqlConn.readData(SQLData.priceNormalQuery(style));
-            print("executes 2nd query");
+          if (itemVal.length == 8) {
+            var itemsResult =
+                await SqlConn.readData(SQLData.getAvailableCount(itemVal));
+            print("items: " + itemsResult);
+            //SqlConn.disconnect();
+            if (itemsResult == '[]') {
+              _showAlert("Style has no inventory");
+            } else {
+              Get.to(() => DisplayTablePage(), arguments: itemVal);
+            }
+          }
+          if (itemVal.length == 10) {
+            var styleStr = itemVal.toString().substring(0, 8);
+            var colourStr = itemVal.toString().substring(8);
+            var itemsResult = await SqlConn.readData(
+                SQLData.getAvailableCountwithColour(styleStr, colourStr));
+            print("items: " + itemsResult);
+            //SqlConn.disconnect();
+            if (itemsResult == '[]') {
+              _showAlert("Style & colour has no inventory");
+            } else {
+              Get.to(
+                  () => DisplayTablePage(
+                        checker: colourStr,
+                      ),
+                  arguments: itemVal);
+            }
+          } else {
+            var style = SQLData.getStyle(itemVal),
+                colour = SQLData.getColour(itemVal),
+                size = SQLData.getSize(itemVal);
+            print("connected");
+            print("sent query");
+            var result =
+                await SqlConn.readData(SQLData.priceColourQuery(style, colour));
             if (result == '[]') {
-              print("not found");
-
-              var snackBar = SnackBar(content: Text("item not found"));
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              result = await SqlConn.readData(SQLData.priceNormalQuery(style));
+              print("executes 2nd query");
+              if (result == '[]') {
+                print("not found");
+                _showAlert("Item not found");
+              } else {
+                print("result: " + result.toString());
+                var descResult =
+                    await SqlConn.readData(SQLData.descQuery(style));
+                print("description: " + descResult.toString());
+                Get.to(() => OptionsPage(),
+                    arguments: [result.toString(), style, colour, size]);
+              }
             } else {
               print("result: " + result.toString());
-              var descResult = await SqlConn.readData(SQLData.descQuery(style));
-              print("description: " + descResult.toString());
               Get.to(() => OptionsPage(),
                   arguments: [result.toString(), style, colour, size]);
             }
-          } else {
-            print("result: " + result.toString());
-            Get.to(() => OptionsPage(),
-                arguments: [result.toString(), style, colour, size]);
           }
+
+          // await SqlConn.connect(
+          //     ip: SQLData.ip,
+          //     port: SQLData.port,
+          //     databaseName: SQLData.databaseName,
+          //     username: SQLData.username,
+          //     password: SQLData.password);
 
           SqlConn.disconnect();
           print(SqlConn.isConnected);
@@ -264,6 +306,35 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
     );
   }
 
+  Future<void> _showAlert(String msg) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Stock Status'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(msg),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Back'),
+              style: TextButton.styleFrom(
+                foregroundColor: AppColours.btnColour,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   // Future<String> getPrice(String style, String colour, String size) async {
   //   print("sent query");
   //   var result = await conn.execute(

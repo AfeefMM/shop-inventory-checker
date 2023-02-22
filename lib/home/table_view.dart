@@ -13,8 +13,12 @@ import 'package:sql_conn/sql_conn.dart';
 import '../utils/sql_data.dart';
 
 class DisplayTablePage extends StatefulWidget {
+  const DisplayTablePage({super.key, this.checker = ""});
+
   @override
   State<DisplayTablePage> createState() => _DisplayTablePageState();
+
+  final String checker;
 }
 
 class _DisplayTablePageState extends State<DisplayTablePage> {
@@ -32,6 +36,7 @@ class _DisplayTablePageState extends State<DisplayTablePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("val = " + styleCode);
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -66,7 +71,7 @@ class _DisplayTablePageState extends State<DisplayTablePage> {
                   child: DataTable(
                     border:
                         TableBorder.all(color: AppColours.btnColour, width: 2),
-                    columnSpacing: MediaQuery.of(context).size.width / 1.9,
+                    columnSpacing: MediaQuery.of(context).size.width / 2.5,
                     horizontalMargin: 12,
                     columns: const [
                       DataColumn(
@@ -118,20 +123,26 @@ class _DisplayTablePageState extends State<DisplayTablePage> {
         password: SQLData.password);
 
     print(SqlConn.isConnected);
-    var itemsResult = await SqlConn.readData(SQLData.getAvailableItems(style));
-
+    late var itemsResult;
+    if (widget.checker == "") {
+      itemsResult = await SqlConn.readData(SQLData.getAvailableItems(style));
+    } else {
+      itemsResult = await SqlConn.readData(
+          SQLData.getAvailableItemswithColour(style, widget.checker));
+    }
+    print("itemsResult: " + itemsResult);
     setState(() {
       listIVSKUN = getStyleCode(itemsResult, true);
     });
+    SqlConn.disconnect();
   }
 
   getStyleCode(code, isStyle) {
     var styles = code.replaceAll(RegExp(r'[^0-9,]'), '');
-    print(styles);
+
     var styleList = styles.toString().split(",");
     if (isStyle) {}
     return styleList;
-    print(styles);
   }
 
   Future<void> getItemsCount(style) async {
@@ -144,11 +155,19 @@ class _DisplayTablePageState extends State<DisplayTablePage> {
         password: SQLData.password);
 
     print(SqlConn.isConnected);
-    var itemsResult = await SqlConn.readData(SQLData.getAvailableCount(style));
+
+    late var itemsResult;
+    if (widget.checker != "") {
+      itemsResult = await SqlConn.readData(
+          SQLData.getAvailableCountwithColour(style, widget.checker));
+    } else {
+      itemsResult = await SqlConn.readData(SQLData.getAvailableCount(style));
+    }
 
     setState(() {
       listIVONHD = getStyleCode(itemsResult, false);
     });
+    SqlConn.disconnect();
   }
 }
 

@@ -44,7 +44,7 @@ class SQLData {
   }
 
   static String priceColourQuery(String style, String colour) {
-    return "Select pcsprc from TIGERPOS.dbo.mfprch where pccolr like '${colour}' and pcstyl like '${style}%' order by pctxdt desc; ";
+    return "Select top 1 pcsprc from TIGERPOS.dbo.mfprch where pccolr like '${colour}' and pcstyl like '${style}%' order by pctxdt desc; ";
   }
 
   static String priceNormalQuery(String style) {
@@ -73,5 +73,13 @@ class SQLData {
 
   static String getAvailableCount(String style) {
     return "Select ivonhd from TIGERPOS.dbo.skinvy where ivskun like '${style}%' and ivonhd <> 0";
+  }
+
+  static String getAvailableCountwithColour(String style, String colour) {
+    return "Select ivonhd from TIGERPOS.dbo.skinvy where ivskun like '${style}001${colour}%' and  ivonhd <> 0";
+  }
+
+  static String getAvailableItemswithColour(String style, String colour) {
+    return "Select ivskun from TIGERPOS.dbo.skinvy where ivskun like '${style}001${colour}%' and ivonhd <> 0";
   }
 }
