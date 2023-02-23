@@ -24,7 +24,7 @@ class DisplayTablePage extends StatefulWidget {
 class _DisplayTablePageState extends State<DisplayTablePage> {
   var listIVSKUN = [];
   var listIVONHD = [];
-  var styleCode = Get.arguments;
+  var styleCode = Get.arguments.toString().substring(0, 8);
 
   @override
   void initState() {
@@ -130,11 +130,11 @@ class _DisplayTablePageState extends State<DisplayTablePage> {
       itemsResult = await SqlConn.readData(
           SQLData.getAvailableItemswithColour(style, widget.checker));
     }
-    print("itemsResult: " + itemsResult);
+    print("itemsResult style: " + itemsResult);
     setState(() {
       listIVSKUN = getStyleCode(itemsResult, true);
     });
-    SqlConn.disconnect();
+    // SqlConn.disconnect();
   }
 
   getStyleCode(code, isStyle) {
@@ -160,14 +160,15 @@ class _DisplayTablePageState extends State<DisplayTablePage> {
     if (widget.checker != "") {
       itemsResult = await SqlConn.readData(
           SQLData.getAvailableCountwithColour(style, widget.checker));
+      print(SQLData.getAvailableCountwithColour(style, widget.checker));
     } else {
       itemsResult = await SqlConn.readData(SQLData.getAvailableCount(style));
     }
-
+    print("itemsResult count: " + itemsResult);
     setState(() {
       listIVONHD = getStyleCode(itemsResult, false);
     });
-    SqlConn.disconnect();
+    //SqlConn.disconnect();
   }
 }
 

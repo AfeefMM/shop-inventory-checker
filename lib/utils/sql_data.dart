@@ -76,10 +76,10 @@ class SQLData {
   }
 
   static String getAvailableCountwithColour(String style, String colour) {
-    return "Select ivonhd from TIGERPOS.dbo.skinvy where ivskun like '${style}001${colour}%' and  ivonhd <> 0";
+    return "Select ivonhd from TIGERPOS.dbo.skinvy where ivskun like '${style}___${colour}__' and  ivonhd <> 0";
   }
 
   static String getAvailableItemswithColour(String style, String colour) {
-    return "Select ivskun from TIGERPOS.dbo.skinvy where ivskun like '${style}001${colour}%' and ivonhd <> 0";
+    return "Select ivskun from TIGERPOS.dbo.skinvy where ivskun like '${style}___${colour}__' and ivonhd <> 0";
   }
 }
