@@ -7,16 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 import 'package:inventory_mgmt/home/table_view.dart';
-import 'package:inventory_mgmt/model/item_price.dart';
 import 'package:inventory_mgmt/utils/colours.dart';
-import 'package:inventory_mgmt/utils/dimensions.dart';
 import 'package:inventory_mgmt/utils/sql_data.dart';
 import 'package:inventory_mgmt/widgets/btn_text.dart';
-import 'package:mysql_client/mysql_client.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 import '../widgets/question_text.dart';
-import '../widgets/table_btn.dart';
 import 'options_page2.dart';
 
 class CodeEntryPage extends StatefulWidget {
@@ -75,12 +71,12 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
           var snackBar = SnackBar(content: Text("item not found"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         } else {
-          print("result: " + result.toString());
+          print("result: $result");
           Get.to(() => OptionsPage(),
               arguments: [result.toString(), style, colour, size]);
         }
       } else {
-        print("result: " + result.toString());
+        print("result: $result");
         Get.to(() => OptionsPage(),
             arguments: [result.toString(), style, colour, size]);
       }
@@ -112,6 +108,7 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -221,14 +218,14 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               username: SQLData.username,
               password: SQLData.password);
 
-          print(SqlConn.isConnected);
-          var snackBar = SnackBar(content: Text("connected"));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
+          print("sql connected: ${SqlConn.isConnected}");
+          // var snackBar = SnackBar(content: Text("connected"));
+          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          //for just style code
           if (itemVal.length == 8) {
             var itemsResult =
                 await SqlConn.readData(SQLData.getAvailableCount(itemVal));
-            print("items: " + itemsResult);
+            // print("items: " + itemsResult);
             //SqlConn.disconnect();
             if (itemsResult == '[]') {
               _showAlert("Style has no inventory");
@@ -236,16 +233,20 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
               Get.to(() => DisplayTablePage(), arguments: itemVal);
             }
           }
+          //for style + colour code
           if (itemVal.length == 10) {
             var styleStr = itemVal.toString().substring(0, 8);
             var colourStr = itemVal.toString().substring(8);
             var itemsResult = await SqlConn.readData(
                 SQLData.getAvailableCountwithColour(styleStr, colourStr));
-            print("items: " + itemsResult);
+            var itemsResult2 = await SqlConn.readData(
+                SQLData.getAvailableItemswithColour(styleStr, colourStr));
+            // print("items: " + itemsResult);
             //SqlConn.disconnect();
-            if (itemsResult == '[]') {
+            if (itemsResult == '[]' && itemsResult2 == '[]') {
               _showAlert("Style & colour has no inventory");
-            } else {
+            } else if (itemsResult != '[]' && itemsResult2 != '[]') {
+              //checking if both results are not empty sets
               Get.to(
                   () => DisplayTablePage(
                         checker: colourStr,
@@ -267,15 +268,15 @@ class _CodeEntryPageState extends State<CodeEntryPage> {
                 print("not found");
                 _showAlert("Item not found");
               } else {
-                print("result: " + result.toString());
+                print("result: $result");
                 var descResult =
                     await SqlConn.readData(SQLData.descQuery(style));
-                print("description: " + descResult.toString());
+                print("description: $descResult");
                 Get.to(() => OptionsPage(),
                     arguments: [result.toString(), style, colour, size]);
               }
             } else {
-              print("result: " + result.toString());
+              print("result: $result");
               Get.to(() => OptionsPage(),
                   arguments: [result.toString(), style, colour, size]);
             }
